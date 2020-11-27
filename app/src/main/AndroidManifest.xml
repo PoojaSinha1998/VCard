@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.burhanrashid52.photoeditor">
+    package="com.vault.photoeditor">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -9,7 +9,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 
     <application
-        android:name=".PhotoApp"
+        android:name="com.vault.photoeditor.PhotoApp"
         android:allowBackup="true"
         android:largeHeap="true"
         android:hardwareAccelerated="false"
@@ -20,12 +20,12 @@
 
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".EditImageLandscActivity"
+        <activity android:name="com.vault.photoeditor.Activity.EditImageLandscActivity"
             android:screenOrientation="landscape"/>
-        <activity android:name=".SavedVisitngCard"
+        <activity android:name="com.vault.photoeditor.Activity.SavedVisitngCard"
             android:label="My Visiting card"
-            android:parentActivityName=".Orientation"/>
-        <activity android:name=".Orientation">
+            android:parentActivityName="com.vault.photoeditor.Activity.Orientation"/>
+        <activity android:name="com.vault.photoeditor.Activity.Orientation">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -33,12 +33,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ImagePickerActivity"
+            android:name="com.vault.photoeditor.Activity.ImagePickerActivity"
             android:screenOrientation="unspecified"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <activity
-            android:name=".EditImageActivity"
+            android:name="com.vault.photoeditor.Activity.EditImageActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
           <!--  <intent-filter>

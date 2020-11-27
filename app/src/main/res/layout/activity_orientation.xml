@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:layout_gravity="center"
     android:gravity="center"
-    tools:context=".Orientation">
+    tools:context="com.vault.photoeditor.Activity.Orientation">
     <LinearLayout
         android:layout_gravity="center"
         android:gravity="center"

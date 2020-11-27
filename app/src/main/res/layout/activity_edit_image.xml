@@ -30,7 +30,7 @@
         app:layout_constraintStart_toStartOf="@+id/photoEditorView"
         app:layout_constraintTop_toTopOf="@+id/photoEditorView" />
 
-    <com.burhanrashid52.photoeditor.photoViewLib.PhotoEditorView
+    <com.vault.photoeditor.photoViewLib.PhotoEditorView
         android:id="@+id/photoEditorView"
         android:layout_width="0dp"
         android:layout_height="0dp"
