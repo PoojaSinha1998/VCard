@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="gray">#DDD8D8</color>
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+    <color name="blue_color_picker">#0066FF</color>
+    <color name="brown_color_picker">#AF593E</color>
+    <color name="green_color_picker">#01A368</color>
+    <color name="orange_color_picker">#FF861F</color>
+    <color name="red_color_picker">#ED0A3F</color>
+    <color name="red_orange_color_picker">#FF3F34</color>
+    <color name="sky_blue_color_picker">#76D7EA</color>
+    <color name="violet_color_picker">#8359A3</color>
+    <color name="yellow_color_picker">#FBE870</color>
+    <color name="yellow_green_color_picker">#C5E17A</color>
+    <color name="tool_bg">#151414</color>
+    <color name="semi_black_transparent">#99000000</color>
+
+    <color name="black_transparent0">#00FFFFFF</color>
+    <color name="black_transparent1">#1AFFFFFF</color>
+
+    <color name="black_transparent2">#33FFFFFF</color>
+    <color name="black_transparent3">#4DFFFFFF</color>
+
+    <color name="black_transparent4">#66FFFFFF</color>
+    <color name="black_transparent5">#80FFFFFF</color>
+    <color name="black_transparent6">#99FFFFFF</color>
+
+    <color name="black_transparent7">#B3FFFFFF</color>
+
+    <color name="black_transparent8">#CCFFFFFF</color>
+    <color name="black_transparent9">#FFFFFF</color>
+
+    <color name="transparent">#00000000</color>
+
+    <color name="pink_transparent0">#0DC10FE8</color>
+    <color name="pink_transparent1">#1AC10FE8</color>
+    <color name="pink_transparent2">#33C10FE8</color>
+    <color name="pink_transparent3">#4DC10FE8</color>
+    <color name="pink_transparent4">#66C10FE8</color>
+    <color name="pink_transparent5">#80C10FE8</color>
+    <color name="pink_transparent6">#99C10FE8</color>
+    <color name="pink_transparent7">#B3C10FE8</color>
+    <color name="pink_transparent8">#CCC10FE8</color>
+    <color name="pink_transparent9">#E6C10FE8</color>
+
+</resources>

@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_gravity="center"
+    android:gravity="center"
+    tools:context=".Orientation">
+    <LinearLayout
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+
+            android:id="@+id/tvLayout"
+            android:background="@drawable/background_gradient_red"
+android:orientation="vertical"
+            android:layout_width="180dp"
+            android:layout_height="130dp">
+            <ImageView
+                android:layout_marginLeft="20dp"
+
+                android:layout_marginTop="20dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/imgcreate"/>
+    <Button
+
+        android:layout_margin="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Create"
+        android:layout_gravity="bottom|right"
+        android:textAllCaps="false"
+        android:textSize="20sp"
+        android:background="@null"
+
+        android:textColor="@color/white"
+        android:layout_centerInParent="true"
+        android:layout_toEndOf="@id/button"
+        android:layout_toRightOf="@id/button" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_margin="10dp"
+            android:background="@drawable/background_gradient_blue"
+            android:orientation="vertical"
+            android:layout_width="145dp"
+            android:layout_height="130dp">
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="20dp"
+
+                android:layout_marginTop="20dp"
+                android:src="@drawable/imgcreate"/>
+            <Button
+
+                android:layout_margin="10dp"
+                android:id="@+id/tvLayout1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Edit"
+                android:layout_gravity="bottom|right"
+                android:textAllCaps="false"
+                android:textSize="20sp"
+                android:background="@null"
+
+                android:textColor="@color/white"
+                android:layout_centerInParent="true"
+                android:layout_toEndOf="@id/button"
+                android:layout_toRightOf="@id/button" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_gravity="center"
+        android:gravity="center">
+        <LinearLayout
+
+            android:id="@+id/tvLayout3"
+            android:background="@drawable/background_gradient_orange"
+            android:orientation="vertical"
+            android:layout_width="145dp"
+            android:layout_height="130dp">
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="20dp"
+
+                android:layout_marginTop="20dp"
+                android:src="@drawable/imgview"/>
+            <Button
+
+                android:layout_margin="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="View Saved"
+                android:layout_gravity="bottom|right"
+                android:textAllCaps="false"
+                android:textSize="20sp"
+                android:background="@null"
+
+                android:textColor="@color/white"
+                android:layout_centerInParent="true"
+                android:layout_toEndOf="@id/button"
+                android:layout_toRightOf="@id/button" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_margin="10dp"
+            android:background="@drawable/background_gradient_green"
+            android:orientation="vertical"
+            android:layout_width="180dp"
+            android:layout_height="130dp">
+            <ImageView
+
+                android:layout_marginLeft="20dp"
+
+                android:layout_marginTop="20dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/imgcreate"/>
+            <Button
+
+                android:layout_margin="10dp"
+                android:id="@+id/tvLayout4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="---"
+                android:layout_gravity="bottom|right"
+                android:textAllCaps="false"
+                android:textSize="20sp"
+                android:background="@null"
+
+                android:textColor="@color/white"
+                android:layout_centerInParent="true"
+                android:layout_toEndOf="@id/button"
+                android:layout_toRightOf="@id/button" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Portrait"
+        android:textSize="24sp"
+        android:visibility="gone"
+        android:layout_marginStart="64sp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="128sp" />
+
+</LinearLayout>
