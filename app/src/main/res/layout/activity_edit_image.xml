@@ -25,6 +25,7 @@
         android:layout_marginRight="70dp"
         android:background="@color/white"
         android:padding="8dp"
+
         app:layout_constraintBottom_toTopOf="@+id/rvConstraintTools"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/photoEditorView"
@@ -33,16 +34,18 @@
     <com.vault.photoeditor.photoViewLib.PhotoEditorView
         android:id="@+id/photoEditorView"
         android:layout_width="0dp"
+        android:adjustViewBounds="true"
+        android:backgroundTint="@color/white"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/rvConstraintTools"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginTop="55dp"
         android:layout_marginBottom="35dp"
-
+        app:photo_src="@null"
         android:layout_marginRight="70dp"
         android:layout_marginLeft="70dp"
-        android:fitsSystemWindows="true"
-        android:src="@drawable/portr_5"
+        android:fitsSystemWindows="false"
+
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         />

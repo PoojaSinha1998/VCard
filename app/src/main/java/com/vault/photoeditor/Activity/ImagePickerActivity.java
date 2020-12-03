@@ -1,6 +1,6 @@
 package com.vault.photoeditor.Activity;
 
-import android.annotation.SuppressLint;
+import android.Manifest;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -18,10 +18,16 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.MultiplePermissionsReport;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.vault.photoeditor.R;
 import com.yalantis.ucrop.UCrop;
 
 import java.io.File;
+import java.util.List;
 
 import static androidx.core.content.FileProvider.getUriForFile;
 
@@ -125,11 +131,8 @@ public class ImagePickerActivity extends AppCompatActivity {
 
     }
 
-    @SuppressLint("MissingSuperCall")
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
-
             case REQUEST_IMAGE_CAPTURE:
                 if (resultCode == RESULT_OK) {
                     cropImage(getCacheImagePath(fileName));
@@ -170,7 +173,7 @@ public class ImagePickerActivity extends AppCompatActivity {
         // applying UI theme
         options.setToolbarColor(ContextCompat.getColor(this, R.color.colorPrimary));
         options.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimary));
-        options.setActiveWidgetColor(ContextCompat.getColor(this, R.color.colorPrimary));
+//        options.setActiveWidgetColor(ContextCompat.getColor(this, R.color.colorPrimary));
 
         if (lockAspectRatio)
             options.withAspectRatio(ASPECT_RATIO_X, ASPECT_RATIO_Y);

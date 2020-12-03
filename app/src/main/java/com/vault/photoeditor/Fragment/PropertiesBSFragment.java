@@ -24,7 +24,7 @@ public class PropertiesBSFragment extends BottomSheetDialogFragment implements S
     private Properties mProperties;
 
     public interface Properties {
-        void onColorChanged(int colorCode);
+        void onColorChanged(int colorCode, int adapterPosition);
 
         void onOpacityChanged(int opacity);
 
@@ -57,10 +57,10 @@ public class PropertiesBSFragment extends BottomSheetDialogFragment implements S
         ColorPickerAdapter colorPickerAdapter = new ColorPickerAdapter(getActivity());
         colorPickerAdapter.setOnColorPickerClickListener(new ColorPickerAdapter.OnColorPickerClickListener() {
             @Override
-            public void onColorPickerClickListener(int colorCode) {
+            public void onColorPickerClickListener(int colorCode, int adapterPosition) {
                 if (mProperties != null) {
                     dismiss();
-                    mProperties.onColorChanged(colorCode);
+                    mProperties.onColorChanged(colorCode,adapterPosition);
                 }
             }
         });

@@ -94,14 +94,14 @@ public class ColorPickerAdapter extends RecyclerView.Adapter<ColorPickerAdapter.
                 @Override
                 public void onClick(View v) {
                     if (onColorPickerClickListener != null)
-                        onColorPickerClickListener.onColorPickerClickListener(colorPickerColors.get(getAdapterPosition()));
+                        onColorPickerClickListener.onColorPickerClickListener(colorPickerColors.get(getAdapterPosition()),getAdapterPosition());
                 }
             });
         }
     }
 
     public interface OnColorPickerClickListener {
-        void onColorPickerClickListener(int colorCode);
+        void onColorPickerClickListener(int colorCode, int adapterPosition);
     }
 
     public static List<Integer> getDefaultColors(Context context) {

@@ -20,30 +20,31 @@
         android:id="@+id/imgbase"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@color/white"
+
         android:padding="8dp"
+
         app:layout_constraintBottom_toTopOf="@+id/guideline"
         app:layout_constraintEnd_toEndOf="@+id/photoEditorView"
         app:layout_constraintStart_toStartOf="@+id/photoEditorView"
         app:layout_constraintTop_toTopOf="@+id/photoEditorView" />
-
-
     <com.vault.photoeditor.photoViewLib.PhotoEditorView
         android:id="@+id/photoEditorView"
         android:layout_width="0dp"
 
         android:layout_height="0dp"
-        android:layout_marginLeft="50dp"
-        android:layout_marginBottom="15dp"
-        android:layout_marginTop="55dp"
-        android:layout_marginRight="130dp"
+        android:layout_marginLeft="55dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginRight="135dp"
 
-        android:background="@drawable/lands_4"
+        android:backgroundTint="@color/white"
+        app:photo_src="@null"
         android:fitsSystemWindows="false"
         app:layout_constraintBottom_toTopOf="@+id/txtCurrentTool"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="@+id/rvConstraintTools"
         app:layout_constraintTop_toTopOf="parent" />
+
 
     <ImageView
         android:id="@+id/imgbrighteness"
@@ -172,5 +173,14 @@
         app:layout_constraintBottom_toTopOf="@+id/photoEditorView"
         app:layout_constraintEnd_toStartOf="@+id/imgUndo"
         app:layout_constraintStart_toEndOf="@+id/imgCamera" />
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

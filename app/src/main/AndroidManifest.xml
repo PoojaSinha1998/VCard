@@ -21,7 +21,8 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity android:name="com.vault.photoeditor.Activity.EditImageLandscActivity"
-            android:screenOrientation="landscape"/>
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name="com.vault.photoeditor.Activity.SavedVisitngCard"
             android:label="My Visiting card"
             android:parentActivityName="com.vault.photoeditor.Activity.Orientation"/>
@@ -35,7 +36,8 @@
         <activity
             android:name="com.vault.photoeditor.Activity.ImagePickerActivity"
             android:screenOrientation="unspecified"
-            android:windowSoftInputMode="stateHidden|adjustPan" />
+            android:windowSoftInputMode="stateHidden|adjustPan"
+            android:theme="@style/AppTheme.NoActionBar"/>
 
         <activity
             android:name="com.vault.photoeditor.Activity.EditImageActivity"

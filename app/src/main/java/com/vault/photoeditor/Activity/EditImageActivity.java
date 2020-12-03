@@ -41,6 +41,7 @@ import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -50,6 +51,7 @@ import androidx.transition.TransitionManager;
 
 import retrofit2.Callback;
 
+import com.bumptech.glide.Glide;
 import com.vault.photoeditor.API.ApiInterface;
 //import com.vault.photoeditor.Const.Constants;
 import com.vault.photoeditor.Const.Constants;
@@ -232,7 +234,7 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
         imgShare.setVisibility(View.GONE);
         imgShare.setOnClickListener(this);
         imgbrighteness = findViewById(R.id.imgbrighteness);
-
+//        mPhotoEditorView.getSource().setImageDrawable(getDrawable(R.drawable.portr_5));
 
       /*  seekBar=findViewById(R.id.seekBar);
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -334,16 +336,16 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
                 break;
 
             case R.id.imgCamera:
-                Intent intent = new Intent(EditImageActivity.this, ImagePickerActivity.class);
+                Intent intent = new Intent(EditImageActivity.this,ImagePickerActivity.class);
                 intent.putExtra(ImagePickerActivity.INTENT_IMAGE_PICKER_OPTION, ImagePickerActivity.REQUEST_IMAGE_CAPTURE);
                 // setting aspect ratio
                 intent.putExtra(ImagePickerActivity.INTENT_LOCK_ASPECT_RATIO, true);
-                intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_X, 1); // 16x9, 1x1, 3:4, 3:2
-                intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_Y, 1);
+                intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_X, 9); // 16x9, 1x1, 3:4, 3:2
+                intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_Y, 16);
                 // setting maximum bitmap width and height
                 intent.putExtra(ImagePickerActivity.INTENT_SET_BITMAP_MAX_WIDTH_HEIGHT, false);
-                intent.putExtra(ImagePickerActivity.INTENT_BITMAP_MAX_WIDTH, 550);
-                intent.putExtra(ImagePickerActivity.INTENT_BITMAP_MAX_HEIGHT, 700);
+                intent.putExtra(ImagePickerActivity.INTENT_BITMAP_MAX_WIDTH, 600);
+                intent.putExtra(ImagePickerActivity.INTENT_BITMAP_MAX_HEIGHT, 750);
                 startActivityForResult(intent, CAMERA_REQUEST);
                 break;
 
@@ -352,12 +354,12 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
                 gintent.putExtra(ImagePickerActivity.INTENT_IMAGE_PICKER_OPTION, ImagePickerActivity.REQUEST_GALLERY_IMAGE);
                 // setting aspect ratio
                 gintent.putExtra(ImagePickerActivity.INTENT_LOCK_ASPECT_RATIO, true);
-                gintent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_X, 1); // 16x9, 1x1, 3:4, 3:2
-                gintent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_Y, 1);
+                gintent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_X, 9); // 16x9, 1x1, 3:4, 3:2
+                gintent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_Y, 16);
                 // setting maximum bitmap width and height
                 gintent.putExtra(ImagePickerActivity.INTENT_SET_BITMAP_MAX_WIDTH_HEIGHT, false);
-                gintent.putExtra(ImagePickerActivity.INTENT_BITMAP_MAX_WIDTH, 550);
-                gintent.putExtra(ImagePickerActivity.INTENT_BITMAP_MAX_HEIGHT, 700);
+                gintent.putExtra(ImagePickerActivity.INTENT_BITMAP_MAX_WIDTH, 600);
+                gintent.putExtra(ImagePickerActivity.INTENT_BITMAP_MAX_HEIGHT, 750);
                 startActivityForResult(gintent, PICK_REQUEST);
                 break;
         }
@@ -597,14 +599,84 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
     }
 
     @Override
-    public void onColorChanged(int colorCode) {
+    public void onColorChanged(int colorCode, int adapterPosition) {
 //        mPhotoEditor.setBrushColor(colorCode);
 
-        if(backgroundSelected) {
-            Log.d("TAG", "onColorChanged: "+backgroundSelected);
-            mPhotoEditorView.getSource().setColorFilter(getResources().getColor(R.color.white));
 
-            mPhotoEditorView.getSource().setColorFilter(colorCode);
+        mPhotoEditorView.getSource().setImageBitmap(null);
+//        mPhotoEditorView.getSource().setImageDrawable(null);
+//        mPhotoEditorView.getSource().setBackground(null);
+//        mPhotoEditorView.getSource().setImageResource(0);
+//        mPhotoEditorView.getSource().clearColorFilter();
+//        mPhotoEditorView.getSource().clearFocus();
+//        Glide.with(mPhotoEditorView.getSource()).clear(mPhotoEditorView.getSource());
+        mPhotoEditorView = findViewById(R.id.photoEditorView);
+        mPhotoEditor = new PhotoEditor.Builder(this, mPhotoEditorView)
+                .setPinchTextScalable(true) // set flag to make text scalable when pinch
+
+                .build(); // build photo editor sdk
+
+        mPhotoEditor.setOnPhotoEditorListener(this);
+//        handleIntentImage(mPhotoEditorView.getSource());
+//        mPhotoEditorView.getSource().setBackgroundResource(R.drawable.portr_5);
+//        imgbase.setImageDrawable(getDrawable(R.drawable.portr_5));
+//        mPhotoEditorView.getSource().setImageDrawable(getDrawable(R.drawable.portr_5));
+        BitmapDrawable BD = (BitmapDrawable) getResources().getDrawable(R.drawable.portr_5);;
+        Bitmap bitmap = BD.getBitmap();
+        Bitmap O = Bitmap.createBitmap(bitmap.getWidth(),bitmap.getHeight(), bitmap.getConfig());
+
+        mPhotoEditorView.getSource().setImageBitmap(O);
+
+
+        Log.d(TAG, "onColorChanged: adapterPosition "+adapterPosition);
+       switch (adapterPosition)
+       {
+           case 0:
+               mPhotoEditorView.getSource().getDrawable().setColorFilter(getResources().getColor(R.color.blue_color_picker),PorterDuff.Mode.DARKEN);
+               Log.d(TAG, "onColorChanged: adapterPosition INSIDE: "+mPhotoEditorView.getSource().getDrawable());
+               break;
+           case 1:
+               mPhotoEditorView.getSource().getDrawable().setColorFilter(getResources().getColor(R.color.brown_color_picker),PorterDuff.Mode.DARKEN);
+               break;
+           case 2:
+               mPhotoEditorView.getSource().getDrawable().setColorFilter(getResources().getColor(R.color.green_color_picker),PorterDuff.Mode.DARKEN);
+               break;
+           case 3:
+               mPhotoEditorView.getSource().getDrawable().setColorFilter(getResources().getColor(R.color.orange_color_picker),PorterDuff.Mode.DARKEN);
+               break;
+           case 4:
+               mPhotoEditorView.getSource().getDrawable().setColorFilter(getResources().getColor(R.color.red_color_picker),PorterDuff.Mode.DARKEN);
+               break;
+           case 5:
+               mPhotoEditorView.getSource().getDrawable().setColorFilter(getResources().getColor(R.color.black),PorterDuff.Mode.DARKEN);
+               break;
+           case 6:
+               mPhotoEditorView.getSource().getDrawable().setColorFilter(getResources().getColor(R.color.red_orange_color_picker),PorterDuff.Mode.DARKEN);
+               break;
+           case 7:
+               mPhotoEditorView.getSource().getDrawable().setColorFilter(getResources().getColor(R.color.sky_blue_color_picker),PorterDuff.Mode.DARKEN);
+               break;
+               case 8:
+           mPhotoEditorView.getSource().getDrawable().setColorFilter(getResources().getColor(R.color.violet_color_picker),PorterDuff.Mode.DARKEN);
+           break;
+           case 9:
+               mPhotoEditorView.getSource().getDrawable().setColorFilter(getResources().getColor(R.color.white),PorterDuff.Mode.DARKEN);
+               break;
+           case 10:
+               mPhotoEditorView.getSource().getDrawable().setColorFilter(getResources().getColor(R.color.yellow_color_picker),PorterDuff.Mode.DARKEN);
+               break;
+           case 11:
+               mPhotoEditorView.getSource().getDrawable().setColorFilter(getResources().getColor(R.color.yellow_green_color_picker),PorterDuff.Mode.DARKEN);
+               break;
+
+       }
+
+
+      /*  if(backgroundSelected) {
+            Log.d("TAG", "onColorChanged: "+backgroundSelected);
+//            mPhotoEditorView.getSource().setColorFilter(getResources().getColor(R.color.white));
+//
+//            mPhotoEditorView.getSource().setColorFilter(colorCode);
 
             Bitmap resultBitmap = mBitmap.copy(mBitmap.getConfig(), true);
             Paint paint = new Paint();
@@ -619,40 +691,56 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
             ;
         }
         else {
-            Log.d("TAG", "onColorChanged: "+backgroundSelected);
-            mPhotoEditorView.getSource().setColorFilter(getResources().getColor(R.color.red_color_picker));
+            Log.d("TAG", "onColorChanged: "+backgroundSelected+" "+colorCode);
+//            mPhotoEditorView.getSource().setColorFilter(colorCode);
 
-            BitmapDrawable BD = (BitmapDrawable) getResources().getDrawable(R.drawable.lands_4);;
+          *//*  BitmapDrawable BD = (BitmapDrawable) getResources().getDrawable(R.drawable.portr_5);;
             Bitmap bitmap = BD.getBitmap();
             Bitmap O = Bitmap.createBitmap(bitmap.getWidth(),bitmap.getHeight(), bitmap.getConfig());
 
-            for(int i=0; i<bitmap.getWidth(); i++){
+
+            Bitmap resultBitmap = O.copy(O.getConfig(), true);
+            Paint paint = new Paint();
+            ColorFilter filter = new LightingColorFilter(colorCode, 1);
+            paint.setColorFilter(filter);
+            Canvas canvas = new Canvas(resultBitmap);
+            canvas.drawBitmap(resultBitmap, 0, 0, paint);
+//        return resultBitmap;
+
+//            mPhotoEditorView.getSource().setImageBitmap(resultBitmap);
+            Glide.with(this).asBitmap().load(resultBitmap).into(mPhotoEditorView.getSource());*//*
+
+//            Log.d("TAG", "onColorChanged: "+backgroundSelected+" "+O);
+
+
+            //IMP CODE for changin the color
+          *//*  for(int i=0; i<bitmap.getWidth(); i++){
                 for(int j=0; j<bitmap.getHeight(); j++){
                     int p = bitmap.getPixel(i, j);
                     int b = colorCode;
-
                     int x =  0;
                     int y =  0;
-                    b =  b+150;
+                    b =  b+1;
                     O.setPixel(i, j, Color.argb(Color.alpha(p), x, y, b));
                 }
-            }
+            }*//*
 //            I.setImageBitmap(O);
-            mPhotoEditorView.getSource().setImageBitmap(O);
+//            mPhotoEditorView.getSource().setImageBitmap(O);
+//            Glide.with(this).asBitmap().load(O).into(mPhotoEditorView.getSource());
 
 
-        }
+        }*/
     }
 
     @Override
     public void onOpacityChanged(int opacity) {
-        mPhotoEditor.setOpacity(opacity);
+      //  mPhotoEditor.setOpacity(opacity);
         mTxtCurrentTool.setText(R.string.label_brush);
     }
 
     @Override
     public void onBrushSizeChanged(int brushSize) {
-        mPhotoEditor.setBrushSize(brushSize);
+       // mPhotoEditor.setBrushSize(brushSize);
         mTxtCurrentTool.setText(R.string.label_brush);
     }
 
@@ -788,7 +876,7 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
         backgroundSelected = true;
         BitmapDrawable ob = new BitmapDrawable(getResources(), bitmap);
 
-        mPhotoEditor.setFilterEffect(PhotoFilter.BRIGHTNESS);
+//        mPhotoEditor.setFilterEffect(PhotoFilter.BRIGHTNESS);
         mPhotoEditorView.getSource().setAdjustViewBounds(true);
 
         mPhotoEditorView.getSource().setImageBitmap(bitmap);
@@ -904,7 +992,7 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
         Log.d(TAG, "onSeekChnage: FL"+fl);
 
     }
-    private void adjustOpacity(Bitmap bitmap, int opacity)
+/*    private void adjustOpacity(Bitmap bitmap, int opacity)
     {
         Bitmap mutableBitmap = bitmap.isMutable()
                 ? bitmap
@@ -915,7 +1003,7 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
 
         mPhotoEditorView.getSource().setImageBitmap(mutableBitmap);
 //        return mutableBitmap;
-    }
+    }*/
 
     @Override
     public void onHueChnage(int fl) {

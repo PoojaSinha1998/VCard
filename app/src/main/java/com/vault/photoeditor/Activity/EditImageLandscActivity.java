@@ -37,6 +37,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.content.FileProvider;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -70,6 +71,9 @@ import com.vault.photoeditor.photoViewLib.TextStyleBuilder;
 import com.vault.photoeditor.photoViewLib.ViewType;
 import com.vault.photoeditor.tools.EditingToolsAdapter;
 import com.vault.photoeditor.tools.ToolType;
+import com.yalantis.ucrop.UCrop;
+import com.yalantis.ucrop.UCropActivity;
+import com.yalantis.ucrop.UCropFragment;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -84,6 +88,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+
+import static androidx.core.content.FileProvider.getUriForFile;
 
 public class EditImageLandscActivity extends BaseActivity implements OnPhotoEditorListener,
         View.OnClickListener,
@@ -110,7 +116,8 @@ public class EditImageLandscActivity extends BaseActivity implements OnPhotoEdit
     private ConstraintLayout mRootView;
     private ConstraintSet mConstraintSet = new ConstraintSet();
     private boolean mIsFilterVisible;ImageView imgbrighteness;
-
+    public static String fileName;
+    private UCropFragment fragment;
 
     Bitmap mBitmap;
     boolean backgroundSelected = false;
@@ -124,8 +131,8 @@ public class EditImageLandscActivity extends BaseActivity implements OnPhotoEdit
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         makeFullScreen();
-        requestWindowFeature(Window.FEATURE_NO_TITLE);//will hide the title
-        getSupportActionBar().hide();
+//        requestWindowFeature(Window.FEATURE_NO_TITLE);//will hide the title
+//        getSupportActionBar().hide();
         setContentView(R.layout.activity_edit_image_landsc);
         model = new ViewModelProvider(this).get(BackgroundViewModel.class);
 
@@ -154,13 +161,17 @@ public class EditImageLandscActivity extends BaseActivity implements OnPhotoEdit
         mRvTools.setLayoutManager(llmTools);
         mRvTools.setAdapter(mEditingToolsAdapter);
 
+
+        Typeface mTextRobotoTf = ResourcesCompat.getFont(this, R.font.roboto_medium);
+        Typeface mEmojiTypeFace = Typeface.createFromAsset(getAssets(), "emojione-android.ttf");
+
         LinearLayoutManager llmFilters = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         mRvFilters.setLayoutManager(llmFilters);
         mRvFilters.setAdapter(mFilterViewAdapter);
         mPhotoEditor = new PhotoEditor.Builder(this, mPhotoEditorView)
                 .setPinchTextScalable(true) // set flag to make text scalable when pinch
-                //.setDefaultTextTypeface(mTextRobotoTf)
-                //.setDefaultEmojiTypeface(mEmojiTypeFace)
+                .setDefaultTextTypeface(mTextRobotoTf)
+                .setDefaultEmojiTypeface(mEmojiTypeFace)
                 .build(); // build photo editor sdk
 
         mPhotoEditor.setOnPhotoEditorListener(this);
@@ -226,6 +237,7 @@ public class EditImageLandscActivity extends BaseActivity implements OnPhotoEdit
 
 
         imgbrighteness = findViewById(R.id.imgbrighteness);
+        mPhotoEditorView.getSource().setImageDrawable(getDrawable(R.drawable.lands_4));
     }
 
     @Override
@@ -263,7 +275,25 @@ public class EditImageLandscActivity extends BaseActivity implements OnPhotoEdit
     public void onStopViewChangeListener(ViewType viewType) {
         Log.d(TAG, "onStopViewChangeListener() called with: viewType = [" + viewType + "]");
     }
+    private void takeCameraImage() {
+        fileName = System.currentTimeMillis() + ".png";
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, getCacheImagePath(fileName));
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, CAMERA_REQUEST);
+        }
 
+
+
+
+    }
+    private Uri getCacheImagePath(String fileName) {
+        File path = new File(getExternalCacheDir(), "Camera");
+        if (!path.exists()) path.mkdirs();
+        File image = new File(path, fileName);
+
+        return getUriForFile(EditImageLandscActivity.this, getPackageName() + ".provider", image);
+    }
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -288,16 +318,16 @@ public class EditImageLandscActivity extends BaseActivity implements OnPhotoEdit
                 break;
 
             case R.id.imgCamera:
-                /*Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(cameraIntent, CAMERA_REQUEST);*/
+//                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                startActivityForResult(cameraIntent, CAMERA_REQUEST);
 
                 Intent intent = new Intent(EditImageLandscActivity.this, ImagePickerActivity.class);
 
                 intent.putExtra(ImagePickerActivity.INTENT_IMAGE_PICKER_OPTION, ImagePickerActivity.REQUEST_IMAGE_CAPTURE);
                 // setting aspect ratio
                 intent.putExtra(ImagePickerActivity.INTENT_LOCK_ASPECT_RATIO, true);
-                intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_X, 1); // 16x9, 1x1, 3:4, 3:2
-                intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_Y, 1);
+                intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_X, 16); // 16x9, 1x1, 3:4, 3:2
+                intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_Y, 9);
                 // setting maximum bitmap width and height
                 intent.putExtra(ImagePickerActivity.INTENT_SET_BITMAP_MAX_WIDTH_HEIGHT, false);
                 intent.putExtra(ImagePickerActivity.INTENT_BITMAP_MAX_WIDTH, 550);
@@ -314,11 +344,11 @@ public class EditImageLandscActivity extends BaseActivity implements OnPhotoEdit
                 gintent.putExtra(ImagePickerActivity.INTENT_IMAGE_PICKER_OPTION, ImagePickerActivity.REQUEST_GALLERY_IMAGE);
                 // setting aspect ratio
                 gintent.putExtra(ImagePickerActivity.INTENT_LOCK_ASPECT_RATIO, true);
-                gintent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_X, 1); // 16x9, 1x1, 3:4, 3:2
-                gintent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_Y, 1);
+                gintent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_X, 16); // 16x9, 1x1, 3:4, 3:2
+                gintent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_Y, 10);
                 // setting maximum bitmap width and height
                 gintent.putExtra(ImagePickerActivity.INTENT_SET_BITMAP_MAX_WIDTH_HEIGHT, false);
-                gintent.putExtra(ImagePickerActivity.INTENT_BITMAP_MAX_WIDTH, 550);
+                gintent.putExtra(ImagePickerActivity.INTENT_BITMAP_MAX_WIDTH, 600);
                 gintent.putExtra(ImagePickerActivity.INTENT_BITMAP_MAX_HEIGHT, 700);
                 startActivityForResult(gintent, PICK_REQUEST);
                 break;
@@ -507,6 +537,10 @@ public class EditImageLandscActivity extends BaseActivity implements OnPhotoEdit
         dialog.getWindow().setAttributes(lp);
     }
 
+    public void setupFragment(UCrop uCrop) {
+
+        startActivity(new Intent(EditImageLandscActivity.this, UCropActivity.class));
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -548,15 +582,86 @@ public class EditImageLandscActivity extends BaseActivity implements OnPhotoEdit
         }
     }
 
-    @Override
-    public void onColorChanged(int colorCode) {
-//        mPhotoEditor.setBrushColor(colorCode);
-//        mTxtCurrentTool.setText(R.string.label_brush);
-        if(backgroundSelected) {
-            Log.d("TAG", "onColorChanged: "+backgroundSelected);
-            mPhotoEditorView.getSource().setColorFilter(getResources().getColor(R.color.white));
 
-            mPhotoEditorView.getSource().setColorFilter(colorCode);
+    @Override
+    public void onColorChanged(int colorCode, int adapterPosition) {
+//        mPhotoEditor.setBrushColor(colorCode);
+
+
+        mPhotoEditorView.getSource().setImageBitmap(null);
+//        mPhotoEditorView.getSource().setImageDrawable(null);
+//        mPhotoEditorView.getSource().setBackground(null);
+//        mPhotoEditorView.getSource().setImageResource(0);
+//        mPhotoEditorView.getSource().clearColorFilter();
+//        mPhotoEditorView.getSource().clearFocus();
+//        Glide.with(mPhotoEditorView.getSource()).clear(mPhotoEditorView.getSource());
+        mPhotoEditorView = findViewById(R.id.photoEditorView);
+        mPhotoEditor = new PhotoEditor.Builder(this, mPhotoEditorView)
+                .setPinchTextScalable(true) // set flag to make text scalable when pinch
+
+                .build(); // build photo editor sdk
+
+        mPhotoEditor.setOnPhotoEditorListener(this);
+//        handleIntentImage(mPhotoEditorView.getSource());
+//        mPhotoEditorView.getSource().setBackgroundResource(R.drawable.portr_5);
+//        imgbase.setImageDrawable(getDrawable(R.drawable.portr_5));
+//        mPhotoEditorView.getSource().setImageDrawable(getDrawable(R.drawable.portr_5));
+        BitmapDrawable BD = (BitmapDrawable) getResources().getDrawable(R.drawable.lands_4);;
+        Bitmap bitmap = BD.getBitmap();
+        Bitmap O = Bitmap.createBitmap(bitmap.getWidth(),bitmap.getHeight(), bitmap.getConfig());
+
+        mPhotoEditorView.getSource().setImageBitmap(O);
+
+
+        Log.d(TAG, "onColorChanged: adapterPosition "+adapterPosition);
+        switch (adapterPosition)
+        {
+            case 0:
+                mPhotoEditorView.getSource().getDrawable().setColorFilter(getResources().getColor(R.color.blue_color_picker),PorterDuff.Mode.DARKEN);
+                Log.d(TAG, "onColorChanged: adapterPosition INSIDE: "+mPhotoEditorView.getSource().getDrawable());
+                break;
+            case 1:
+                mPhotoEditorView.getSource().getDrawable().setColorFilter(getResources().getColor(R.color.brown_color_picker),PorterDuff.Mode.DARKEN);
+                break;
+            case 2:
+                mPhotoEditorView.getSource().getDrawable().setColorFilter(getResources().getColor(R.color.green_color_picker),PorterDuff.Mode.DARKEN);
+                break;
+            case 3:
+                mPhotoEditorView.getSource().getDrawable().setColorFilter(getResources().getColor(R.color.orange_color_picker),PorterDuff.Mode.DARKEN);
+                break;
+            case 4:
+                mPhotoEditorView.getSource().getDrawable().setColorFilter(getResources().getColor(R.color.red_color_picker),PorterDuff.Mode.DARKEN);
+                break;
+            case 5:
+                mPhotoEditorView.getSource().getDrawable().setColorFilter(getResources().getColor(R.color.black),PorterDuff.Mode.DARKEN);
+                break;
+            case 6:
+                mPhotoEditorView.getSource().getDrawable().setColorFilter(getResources().getColor(R.color.red_orange_color_picker),PorterDuff.Mode.DARKEN);
+                break;
+            case 7:
+                mPhotoEditorView.getSource().getDrawable().setColorFilter(getResources().getColor(R.color.sky_blue_color_picker),PorterDuff.Mode.DARKEN);
+                break;
+            case 8:
+                mPhotoEditorView.getSource().getDrawable().setColorFilter(getResources().getColor(R.color.violet_color_picker),PorterDuff.Mode.DARKEN);
+                break;
+            case 9:
+                mPhotoEditorView.getSource().getDrawable().setColorFilter(getResources().getColor(R.color.white),PorterDuff.Mode.DARKEN);
+                break;
+            case 10:
+                mPhotoEditorView.getSource().getDrawable().setColorFilter(getResources().getColor(R.color.yellow_color_picker),PorterDuff.Mode.DARKEN);
+                break;
+            case 11:
+                mPhotoEditorView.getSource().getDrawable().setColorFilter(getResources().getColor(R.color.yellow_green_color_picker),PorterDuff.Mode.DARKEN);
+                break;
+
+        }
+
+
+      /*  if(backgroundSelected) {
+            Log.d("TAG", "onColorChanged: "+backgroundSelected);
+//            mPhotoEditorView.getSource().setColorFilter(getResources().getColor(R.color.white));
+//
+//            mPhotoEditorView.getSource().setColorFilter(colorCode);
 
             Bitmap resultBitmap = mBitmap.copy(mBitmap.getConfig(), true);
             Paint paint = new Paint();
@@ -571,29 +676,45 @@ public class EditImageLandscActivity extends BaseActivity implements OnPhotoEdit
             ;
         }
         else {
-            Log.d("TAG", "onColorChanged: "+backgroundSelected);
-            mPhotoEditorView.getSource().setColorFilter(getResources().getColor(R.color.red_color_picker));
+            Log.d("TAG", "onColorChanged: "+backgroundSelected+" "+colorCode);
+//            mPhotoEditorView.getSource().setColorFilter(colorCode);
 
-            BitmapDrawable BD = (BitmapDrawable) getResources().getDrawable(R.drawable.lands_4);;
-           Bitmap bitmap = BD.getBitmap();
-           Bitmap O = Bitmap.createBitmap(bitmap.getWidth(),bitmap.getHeight(), bitmap.getConfig());
+          *//*  BitmapDrawable BD = (BitmapDrawable) getResources().getDrawable(R.drawable.portr_5);;
+            Bitmap bitmap = BD.getBitmap();
+            Bitmap O = Bitmap.createBitmap(bitmap.getWidth(),bitmap.getHeight(), bitmap.getConfig());
 
-            for(int i=0; i<bitmap.getWidth(); i++){
+
+            Bitmap resultBitmap = O.copy(O.getConfig(), true);
+            Paint paint = new Paint();
+            ColorFilter filter = new LightingColorFilter(colorCode, 1);
+            paint.setColorFilter(filter);
+            Canvas canvas = new Canvas(resultBitmap);
+            canvas.drawBitmap(resultBitmap, 0, 0, paint);
+//        return resultBitmap;
+
+//            mPhotoEditorView.getSource().setImageBitmap(resultBitmap);
+            Glide.with(this).asBitmap().load(resultBitmap).into(mPhotoEditorView.getSource());*//*
+
+//            Log.d("TAG", "onColorChanged: "+backgroundSelected+" "+O);
+
+
+            //IMP CODE for changin the color
+          *//*  for(int i=0; i<bitmap.getWidth(); i++){
                 for(int j=0; j<bitmap.getHeight(); j++){
                     int p = bitmap.getPixel(i, j);
                     int b = colorCode;
-
                     int x =  0;
                     int y =  0;
-                    b =  b+150;
+                    b =  b+1;
                     O.setPixel(i, j, Color.argb(Color.alpha(p), x, y, b));
                 }
-            }
+            }*//*
 //            I.setImageBitmap(O);
-            mPhotoEditorView.getSource().setImageBitmap(O);
+//            mPhotoEditorView.getSource().setImageBitmap(O);
+//            Glide.with(this).asBitmap().load(O).into(mPhotoEditorView.getSource());
 
 
-        }
+        }*/
     }
 
     @Override
@@ -735,6 +856,22 @@ public class EditImageLandscActivity extends BaseActivity implements OnPhotoEdit
 
     @Override
     public void onBackgrounChnage(Bitmap bitmap) {
+        mBitmap = bitmap;
+        backgroundSelected = true;
+        BitmapDrawable ob = new BitmapDrawable(getResources(), bitmap);
+
+//        mPhotoEditor.setFilterEffect(PhotoFilter.BRIGHTNESS);
+        mPhotoEditorView.getSource().setAdjustViewBounds(true);
+
+        mPhotoEditorView.getSource().setImageBitmap(bitmap);
+
+        Log.d(TAG, "onBackgrounChnage: "+bitmap);
+
+        Log.d(TAG, "onBackgrounChnage: " + bitmap);
+//        mPhotoEditorView.getSource().setImageAlpha();
+    }
+    /*@Override
+    public void onBackgrounChnage(Bitmap bitmap) {
 //        BitmapDrawable ob = new BitmapDrawable(getResources(), bitmap);
 
         mBitmap = bitmap;
@@ -754,7 +891,7 @@ public class EditImageLandscActivity extends BaseActivity implements OnPhotoEdit
 
         Log.d(TAG, "onBackgrounChnage: "+bitmap);
 
-    }
+    }*/
 
     @Override
     public void onSymbolChnage(Bitmap bitmap) {

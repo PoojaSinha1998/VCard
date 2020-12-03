@@ -152,7 +152,7 @@ public class TextEditorDialogFragment extends DialogFragment {
         //This listener will change the text color when clicked on any color from picker
         colorPickerAdapter.setOnColorPickerClickListener(new ColorPickerAdapter.OnColorPickerClickListener() {
             @Override
-            public void onColorPickerClickListener(int colorCode) {
+            public void onColorPickerClickListener(int colorCode, int adapterPosition) {
                 mColorCode = colorCode;
                 mAddTextEditText.setTextColor(colorCode);
             }
