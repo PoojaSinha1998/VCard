@@ -39,11 +39,12 @@ public class TextEditorDialogFragment extends DialogFragment {
     private TextView mAddTextDoneTextView;
     private InputMethodManager mInputMethodManager;
     private int mColorCode;
+    private Typeface mFontCode;
     private TextEditor mTextEditor;
     private RecyclerView add_font_familiy;
 
     public interface TextEditor {
-        void onDone(String inputText, int colorCode);
+        void onDone(String inputText, int colorCode,Typeface typeface);
     }
 
 
@@ -110,7 +111,7 @@ public class TextEditorDialogFragment extends DialogFragment {
             @Override
             public void onClick(View view) {
 
-                    mAddTextEditText.setTypeface(mAddTextEditText.getTypeface(), Typeface.NORMAL);
+                mAddTextEditText.setTypeface(mAddTextEditText.getTypeface(), Typeface.NORMAL);
 
             }
         });
@@ -138,6 +139,7 @@ public class TextEditorDialogFragment extends DialogFragment {
             public void onFontPickerClickListener(String colorCode) {
                 Typeface typeface = Typeface.createFromAsset(getActivity().getAssets(), "font/"+colorCode);
                 mAddTextEditText.setTypeface(typeface);
+                mFontCode = typeface;
 
             }
         });
@@ -171,7 +173,7 @@ public class TextEditorDialogFragment extends DialogFragment {
                 dismiss();
                 String inputText = mAddTextEditText.getText().toString();
                 if (!TextUtils.isEmpty(inputText) && mTextEditor != null) {
-                    mTextEditor.onDone(inputText, mColorCode);
+                    mTextEditor.onDone(inputText, mColorCode,mFontCode);
                 }
             }
         });

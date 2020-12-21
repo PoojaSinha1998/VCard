@@ -282,10 +282,11 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
                 TextEditorDialogFragment.show(this, text, colorCode);
         textEditorDialogFragment.setOnTextEditorListener(new TextEditorDialogFragment.TextEditor() {
             @Override
-            public void onDone(String inputText, int colorCode) {
+            public void onDone(String inputText, int colorCode,Typeface typeface) {
                 final TextStyleBuilder styleBuilder = new TextStyleBuilder();
                 styleBuilder.withTextColor(colorCode);
 
+                styleBuilder.withTextFont(typeface);
                 mPhotoEditor.editText(rootView, inputText, styleBuilder);
                 mTxtCurrentTool.setText(R.string.label_text);
             }
@@ -483,7 +484,7 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
         }
 
     }
-//todo
+    //todo
     public void ChooseImageAsABgOrSymbol(Context activity, final Bitmap photo) {
         final Dialog dialog = new Dialog(activity);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -629,47 +630,47 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
 
 
         Log.d(TAG, "onColorChanged: adapterPosition "+adapterPosition);
-       switch (adapterPosition)
-       {
-           case 0:
-               mPhotoEditorView.getSource().getDrawable().setColorFilter(getResources().getColor(R.color.blue_color_picker),PorterDuff.Mode.DARKEN);
-               Log.d(TAG, "onColorChanged: adapterPosition INSIDE: "+mPhotoEditorView.getSource().getDrawable());
-               break;
-           case 1:
-               mPhotoEditorView.getSource().getDrawable().setColorFilter(getResources().getColor(R.color.brown_color_picker),PorterDuff.Mode.DARKEN);
-               break;
-           case 2:
-               mPhotoEditorView.getSource().getDrawable().setColorFilter(getResources().getColor(R.color.green_color_picker),PorterDuff.Mode.DARKEN);
-               break;
-           case 3:
-               mPhotoEditorView.getSource().getDrawable().setColorFilter(getResources().getColor(R.color.orange_color_picker),PorterDuff.Mode.DARKEN);
-               break;
-           case 4:
-               mPhotoEditorView.getSource().getDrawable().setColorFilter(getResources().getColor(R.color.red_color_picker),PorterDuff.Mode.DARKEN);
-               break;
-           case 5:
-               mPhotoEditorView.getSource().getDrawable().setColorFilter(getResources().getColor(R.color.black),PorterDuff.Mode.DARKEN);
-               break;
-           case 6:
-               mPhotoEditorView.getSource().getDrawable().setColorFilter(getResources().getColor(R.color.red_orange_color_picker),PorterDuff.Mode.DARKEN);
-               break;
-           case 7:
-               mPhotoEditorView.getSource().getDrawable().setColorFilter(getResources().getColor(R.color.sky_blue_color_picker),PorterDuff.Mode.DARKEN);
-               break;
-               case 8:
-           mPhotoEditorView.getSource().getDrawable().setColorFilter(getResources().getColor(R.color.violet_color_picker),PorterDuff.Mode.DARKEN);
-           break;
-           case 9:
-               mPhotoEditorView.getSource().getDrawable().setColorFilter(getResources().getColor(R.color.white),PorterDuff.Mode.DARKEN);
-               break;
-           case 10:
-               mPhotoEditorView.getSource().getDrawable().setColorFilter(getResources().getColor(R.color.yellow_color_picker),PorterDuff.Mode.DARKEN);
-               break;
-           case 11:
-               mPhotoEditorView.getSource().getDrawable().setColorFilter(getResources().getColor(R.color.yellow_green_color_picker),PorterDuff.Mode.DARKEN);
-               break;
+        switch (adapterPosition)
+        {
+            case 0:
+                mPhotoEditorView.getSource().getDrawable().setColorFilter(getResources().getColor(R.color.blue_color_picker),PorterDuff.Mode.DARKEN);
+                Log.d(TAG, "onColorChanged: adapterPosition INSIDE: "+mPhotoEditorView.getSource().getDrawable());
+                break;
+            case 1:
+                mPhotoEditorView.getSource().getDrawable().setColorFilter(getResources().getColor(R.color.brown_color_picker),PorterDuff.Mode.DARKEN);
+                break;
+            case 2:
+                mPhotoEditorView.getSource().getDrawable().setColorFilter(getResources().getColor(R.color.green_color_picker),PorterDuff.Mode.DARKEN);
+                break;
+            case 3:
+                mPhotoEditorView.getSource().getDrawable().setColorFilter(getResources().getColor(R.color.orange_color_picker),PorterDuff.Mode.DARKEN);
+                break;
+            case 4:
+                mPhotoEditorView.getSource().getDrawable().setColorFilter(getResources().getColor(R.color.red_color_picker),PorterDuff.Mode.DARKEN);
+                break;
+            case 5:
+                mPhotoEditorView.getSource().getDrawable().setColorFilter(getResources().getColor(R.color.black),PorterDuff.Mode.DARKEN);
+                break;
+            case 6:
+                mPhotoEditorView.getSource().getDrawable().setColorFilter(getResources().getColor(R.color.red_orange_color_picker),PorterDuff.Mode.DARKEN);
+                break;
+            case 7:
+                mPhotoEditorView.getSource().getDrawable().setColorFilter(getResources().getColor(R.color.sky_blue_color_picker),PorterDuff.Mode.DARKEN);
+                break;
+            case 8:
+                mPhotoEditorView.getSource().getDrawable().setColorFilter(getResources().getColor(R.color.violet_color_picker),PorterDuff.Mode.DARKEN);
+                break;
+            case 9:
+                mPhotoEditorView.getSource().getDrawable().setColorFilter(getResources().getColor(R.color.white),PorterDuff.Mode.DARKEN);
+                break;
+            case 10:
+                mPhotoEditorView.getSource().getDrawable().setColorFilter(getResources().getColor(R.color.yellow_color_picker),PorterDuff.Mode.DARKEN);
+                break;
+            case 11:
+                mPhotoEditorView.getSource().getDrawable().setColorFilter(getResources().getColor(R.color.yellow_green_color_picker),PorterDuff.Mode.DARKEN);
+                break;
 
-       }
+        }
 
 
       /*  if(backgroundSelected) {
@@ -734,13 +735,13 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
 
     @Override
     public void onOpacityChanged(int opacity) {
-      //  mPhotoEditor.setOpacity(opacity);
+        //  mPhotoEditor.setOpacity(opacity);
         mTxtCurrentTool.setText(R.string.label_brush);
     }
 
     @Override
     public void onBrushSizeChanged(int brushSize) {
-       // mPhotoEditor.setBrushSize(brushSize);
+        // mPhotoEditor.setBrushSize(brushSize);
         mTxtCurrentTool.setText(R.string.label_brush);
     }
 
@@ -806,10 +807,10 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
                 TextEditorDialogFragment textEditorDialogFragment = TextEditorDialogFragment.show(this);
                 textEditorDialogFragment.setOnTextEditorListener(new TextEditorDialogFragment.TextEditor() {
                     @Override
-                    public void onDone(String inputText, int colorCode) {
+                    public void onDone(String inputText, int colorCode,Typeface typeface) {
                         final TextStyleBuilder styleBuilder = new TextStyleBuilder();
                         styleBuilder.withTextColor(colorCode);
-
+                        styleBuilder.withTextFont(typeface);
                         mPhotoEditor.addText(inputText, styleBuilder);
                         mTxtCurrentTool.setText(R.string.label_text);
                     }
@@ -949,43 +950,43 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
 
 //        int c = (fl*b)/progress;
 //        progresss =(float) c/100;
-            if(fl==1) {
+        if(fl==1) {
 
-                mPhotoEditorView.getSource().setImageBitmap(makeTransparent(mBitmap,1));
+            mPhotoEditorView.getSource().setImageBitmap(makeTransparent(mBitmap,1));
 //                imgbrighteness.setBackgroundColor(getResources().getColor(R.color.black_transparent9));
-            }
-            if(fl==2) {
-                mPhotoEditorView.getSource().setImageBitmap(makeTransparent(mBitmap,2));
+        }
+        if(fl==2) {
+            mPhotoEditorView.getSource().setImageBitmap(makeTransparent(mBitmap,2));
 //                imgbrighteness.setBackgroundColor(getResources().getColor(R.color.black_transparent8));
-            }
-            if(fl==3) {
-                mPhotoEditorView.getSource().setImageBitmap(makeTransparent(mBitmap,3));
+        }
+        if(fl==3) {
+            mPhotoEditorView.getSource().setImageBitmap(makeTransparent(mBitmap,3));
 //                imgbrighteness.setBackgroundColor(getResources().getColor(R.color.black_transparent7));
-            }
-            if(fl==4) {
-                mPhotoEditorView.getSource().setImageBitmap(makeTransparent(mBitmap,4));
+        }
+        if(fl==4) {
+            mPhotoEditorView.getSource().setImageBitmap(makeTransparent(mBitmap,4));
 //                imgbrighteness.setBackgroundColor(getResources().getColor(R.color.black_transparent6));
-            }
-            if(fl==5) {
-                mPhotoEditorView.getSource().setImageBitmap(makeTransparent(mBitmap,5));
+        }
+        if(fl==5) {
+            mPhotoEditorView.getSource().setImageBitmap(makeTransparent(mBitmap,5));
 //                imgbrighteness.setBackgroundColor(getResources().getColor(R.color.black_transparent5));
-            }
-            if(fl==6) {
-                mPhotoEditorView.getSource().setImageBitmap(makeTransparent(mBitmap,6));
+        }
+        if(fl==6) {
+            mPhotoEditorView.getSource().setImageBitmap(makeTransparent(mBitmap,6));
 //                imgbrighteness.setBackgroundColor(getResources().getColor(R.color.black_transparent4));
-            }
-            if(fl==7) {
-                mPhotoEditorView.getSource().setImageBitmap(makeTransparent(mBitmap,7));
+        }
+        if(fl==7) {
+            mPhotoEditorView.getSource().setImageBitmap(makeTransparent(mBitmap,7));
 //                imgbrighteness.setBackgroundColor(getResources().getColor(R.color.black_transparent3));
-            }
-            if(fl==8) {
-                mPhotoEditorView.getSource().setImageBitmap(makeTransparent(mBitmap,8));
+        }
+        if(fl==8) {
+            mPhotoEditorView.getSource().setImageBitmap(makeTransparent(mBitmap,8));
 //                imgbrighteness.setBackgroundColor(getResources().getColor(R.color.black_transparent2));
-            }
-            if(fl==9) {
-                mPhotoEditorView.getSource().setImageBitmap(makeTransparent(mBitmap,9));
+        }
+        if(fl==9) {
+            mPhotoEditorView.getSource().setImageBitmap(makeTransparent(mBitmap,9));
 //                imgbrighteness.setBackgroundColor(getResources().getColor(R.color.black_transparent0));
-            }
+        }
 
 
         mPhotoEditorView.getSource().setImageBitmap(makeTransparent(mBitmap,fl));

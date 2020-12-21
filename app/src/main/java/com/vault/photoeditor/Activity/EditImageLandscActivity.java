@@ -246,10 +246,11 @@ public class EditImageLandscActivity extends BaseActivity implements OnPhotoEdit
                 TextEditorDialogFragment.show(this, text, colorCode);
         textEditorDialogFragment.setOnTextEditorListener(new TextEditorDialogFragment.TextEditor() {
             @Override
-            public void onDone(String inputText, int colorCode) {
+            public void onDone(String inputText, int colorCode,Typeface typeface) {
                 final TextStyleBuilder styleBuilder = new TextStyleBuilder();
                 styleBuilder.withTextColor(colorCode);
 
+                styleBuilder.withTextFont(typeface);
                 mPhotoEditor.editText(rootView, inputText, styleBuilder);
                 mTxtCurrentTool.setText(R.string.label_text);
             }
@@ -767,7 +768,7 @@ public class EditImageLandscActivity extends BaseActivity implements OnPhotoEdit
         builder.setNeutralButton("Discard", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-               finish();
+                finish();
             }
         });
         builder.create().show();
@@ -791,10 +792,11 @@ public class EditImageLandscActivity extends BaseActivity implements OnPhotoEdit
                 TextEditorDialogFragment textEditorDialogFragment = TextEditorDialogFragment.show(this);
                 textEditorDialogFragment.setOnTextEditorListener(new TextEditorDialogFragment.TextEditor() {
                     @Override
-                    public void onDone(String inputText, int colorCode) {
+                    public void onDone(String inputText, int colorCode,Typeface typeface) {
                         final TextStyleBuilder styleBuilder = new TextStyleBuilder();
                         styleBuilder.withTextColor(colorCode);
 
+                        styleBuilder.withTextFont(typeface);
                         mPhotoEditor.addText(inputText, styleBuilder);
                         mTxtCurrentTool.setText(R.string.label_text);
                     }
